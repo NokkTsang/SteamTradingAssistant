@@ -306,6 +306,11 @@ STRINGS = {
         "zh-HK": "← 返回首頁",
         "zh-CN": "← 返回首页",
     },
+    "link_tutorial": {
+        "en": "📖 How to Use (README)",
+        "zh-HK": "📖 使用教程（README）",
+        "zh-CN": "📖 使用教程（README）",
+    },
 }
 
 

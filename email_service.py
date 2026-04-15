@@ -126,17 +126,22 @@ def send_welcome(to_email, subscription):
 
 
 def _send_smtp(to_email, msg):
-    """Low-level SMTP send."""
+    """Low-level SMTP send. Uses SMTP_SSL (port 465) if SMTP_USE_SSL=true, else STARTTLS (port 587)."""
     if not Config.SMTP_USERNAME or not Config.SMTP_PASSWORD:
         logger.warning("SMTP credentials not configured — email not sent to %s", to_email)
         return
 
     try:
-        with smtplib.SMTP(Config.SMTP_HOST, Config.SMTP_PORT, timeout=30) as server:
-            if Config.SMTP_USE_TLS:
-                server.starttls()
-            server.login(Config.SMTP_USERNAME, Config.SMTP_PASSWORD)
-            server.sendmail(Config.MAIL_FROM, [to_email], msg.as_string())
+        if Config.SMTP_USE_SSL:
+            with smtplib.SMTP_SSL(Config.SMTP_HOST, Config.SMTP_PORT, timeout=30) as server:
+                server.login(Config.SMTP_USERNAME, Config.SMTP_PASSWORD)
+                server.sendmail(Config.MAIL_FROM, [to_email], msg.as_string())
+        else:
+            with smtplib.SMTP(Config.SMTP_HOST, Config.SMTP_PORT, timeout=30) as server:
+                if Config.SMTP_USE_TLS:
+                    server.starttls()
+                server.login(Config.SMTP_USERNAME, Config.SMTP_PASSWORD)
+                server.sendmail(Config.MAIL_FROM, [to_email], msg.as_string())
         logger.info("Email sent to %s", to_email)
     except Exception as exc:
         logger.error("Failed to send email to %s: %s", to_email, exc)
