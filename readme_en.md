@@ -69,27 +69,9 @@ The Steam Community Market is essentially a massive virtual second-hand marketpl
 
 The entire product is **one page** and **one email**:
 
-```
-┌─────────────────────────────────────┐
-│         Steam Trader                │
-│                                     │
-│  [Choose CSV file]  📎 records.csv  │
-│                                     │
-│  Email: ┌───────────────────────┐   │
-│         │ you@example.com       │   │
-│         └───────────────────────┘   │
-│                                     │
-│  Profit threshold:  ┌────┐          │
-│                     │ 10 │ %        │
-│                     └────┘          │
-│                                     │
-│          [ Start Subscription ]     │
-│                                     │
-│  · Daily market reports to inbox    │
-│  · Auto-stops after 30 days        │
-│  · Reply to any email to cancel    │
-└─────────────────────────────────────┘
-```
+<div align="center">
+<img src="media/web_page.png" width="420" alt="Steam Trader subscription page">
+</div>
 
 User uploads CSV + enters email → System fetches market prices daily, generates static HTML email reports. **No login, no account registration, no need to keep a tab open.**
 
