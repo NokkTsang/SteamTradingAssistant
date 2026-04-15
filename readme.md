@@ -13,7 +13,7 @@
 
 Upload trade history · Enter your email · Receive daily market reports automatically
 
-**[Live Demo](https://steamtrader.up.railway.app)**
+**[Try It Now](https://steamtrader.up.railway.app)**
 
 </div>
 
