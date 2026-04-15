@@ -13,7 +13,7 @@ class Config:
 
     # Database
     DATABASE_URL = os.getenv("DATABASE_URL", "")  # PostgreSQL on Railway
-    DATABASE_PATH = os.getenv("DATABASE_PATH", "steam_trader.db")  # SQLite fallback (local)
+    DATABASE_PATH = os.getenv("DATABASE_PATH", "/tmp/steam_trader.db")  # SQLite fallback
 
     # Steam API
     STEAM_CURRENCY = int(os.getenv("STEAM_CURRENCY", "29"))  # 29 = HKD
