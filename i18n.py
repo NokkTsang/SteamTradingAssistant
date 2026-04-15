@@ -318,7 +318,7 @@ def t(key, lang=None, **kwargs):
     if lang not in SUPPORTED_LANGS:
         lang = DEFAULT_LANG
     entry = STRINGS.get(key, {})
-    text = entry.get(lang) or entry.get(DEFAULT_LANG, key)
+    text = entry[lang] if lang in entry else entry.get(DEFAULT_LANG, key)
     if kwargs:
         text = text.format(**kwargs)
     return text

@@ -275,52 +275,71 @@
             opacity: 0.9;
         }
 
-        /* ── Item Carousel ── */
-        .carousel-wrapper {
-            margin: 0 0 1.5rem 0;
+        /* ── Item Carousel Background ── */
+        .carousel-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
             overflow: hidden;
-            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-        }
-
-        .carousel-track {
+            pointer-events: none;
             display: flex;
-            gap: 1.5rem;
-            animation: scroll-left 40s linear infinite;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2vh 0;
+            opacity: 0.18;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%);
+        }
+
+        .carousel-row {
+            display: flex;
             width: max-content;
+            gap: 2rem;
+            will-change: transform;
         }
 
-        .carousel-track:hover {
-            animation-play-state: paused;
-        }
+        .carousel-row:nth-child(1) { animation: scroll-left  55s linear infinite; }
+        .carousel-row:nth-child(2) { animation: scroll-right 45s linear infinite; }
+        .carousel-row:nth-child(3) { animation: scroll-left  65s linear infinite; }
 
-        .carousel-track img {
-            height: 80px;
+        .carousel-row img {
+            height: 90px;
             width: auto;
             object-fit: contain;
             flex-shrink: 0;
-            filter: drop-shadow(0 2px 8px rgba(109, 91, 186, 0.25));
-            transition: transform 0.3s, filter 0.3s;
-        }
-
-        .carousel-track img:hover {
-            transform: scale(1.15);
-            filter: drop-shadow(0 4px 16px rgba(109, 91, 186, 0.5));
+            filter: drop-shadow(0 2px 12px rgba(109,91,186,0.4));
         }
 
         @keyframes scroll-left {
             0%   { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
+        @keyframes scroll-right {
+            0%   { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        body > .container {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
     {% if cs2_images %}
-    <div class="carousel-wrapper">
-        <div class="carousel-track">
-            {% for img in cs2_images %}{% for _ in range(2) %}
-            <img src="/media/CS2/{{ img }}" alt="{{ img[:-5].replace('_', ' ') }}" loading="lazy">
-            {% endfor %}{% endfor %}
+    {# Split 30 images into 3 rows with shuffled order #}
+    {% set row1 = [cs2_images[0],cs2_images[3],cs2_images[6],cs2_images[9],cs2_images[12],cs2_images[15],cs2_images[18],cs2_images[21],cs2_images[24],cs2_images[27]] %}
+    {% set row2 = [cs2_images[1],cs2_images[4],cs2_images[7],cs2_images[10],cs2_images[13],cs2_images[16],cs2_images[19],cs2_images[22],cs2_images[25],cs2_images[28]] %}
+    {% set row3 = [cs2_images[2],cs2_images[5],cs2_images[8],cs2_images[11],cs2_images[14],cs2_images[17],cs2_images[20],cs2_images[23],cs2_images[26],cs2_images[29]] %}
+    <div class="carousel-bg">
+        <div class="carousel-row">
+            {% for img in row1 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+        </div>
+        <div class="carousel-row">
+            {% for img in row2 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+        </div>
+        <div class="carousel-row">
+            {% for img in row3 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
         </div>
     </div>
     {% endif %}
@@ -336,7 +355,7 @@
         <div class="header">
             <img src="/media/logo/steam.svg" alt="Steam" class="steam-logo">
             <h1>Steam Trader</h1>
-            <p>{{ i.page_subtitle }}</p>
+            <p>{{ i.page_subtitle | safe }}</p>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
