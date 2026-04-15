@@ -169,6 +169,36 @@ def media_file(filename):
     return send_from_directory("media", filename)
 
 
+@app.route("/healthz")
+def healthz():
+    """Diagnostic endpoint: check DB connection and env vars."""
+    import json
+    from models import _use_pg, get_db
+    info = {
+        "db_backend": "postgresql" if _use_pg() else "sqlite",
+        "DATABASE_URL_set": bool(Config.DATABASE_URL),
+        "SMTP_USERNAME_set": bool(Config.SMTP_USERNAME),
+        "SMTP_PASSWORD_set": bool(Config.SMTP_PASSWORD),
+        "MAIL_FROM": Config.MAIL_FROM or "(empty)",
+        "BASE_URL": Config.BASE_URL,
+    }
+    try:
+        conn = get_db()
+        cur = conn.cursor() if _use_pg() else conn.execute("SELECT 1")
+        if _use_pg():
+            cur.execute("SELECT COUNT(*) as n FROM subscriptions")
+            row = cur.fetchone()
+            info["subscriptions_count"] = row["n"] if row else "?"
+        else:
+            info["subscriptions_count"] = conn.execute("SELECT COUNT(*) FROM subscriptions").fetchone()[0]
+        conn.close()
+        info["db_ok"] = True
+    except Exception as e:
+        info["db_ok"] = False
+        info["db_error"] = str(e)
+    return json.dumps(info, indent=2), 200, {"Content-Type": "application/json"}
+
+
 # --------------- Entry point ---------------
 
 if __name__ == "__main__":
