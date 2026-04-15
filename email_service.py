@@ -157,6 +157,8 @@ def _send_smtp(to_email, msg):
                 json=payload,
                 timeout=15,
             )
+            if not resp.ok:
+                logger.error("Resend API error %s: %s", resp.status_code, resp.text)
             resp.raise_for_status()
             logger.info("Email sent via Resend to %s", to_email)
             return
