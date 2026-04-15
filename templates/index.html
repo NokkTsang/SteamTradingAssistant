@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="{{ lang_html }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Trader</title>
+    <style>
+        :root {
+            --bg: #0e0e10;
+            --surface: #18181b;
+            --border: #2d2d33;
+            --text: #efeff1;
+            --text-dim: #adadb8;
+            --accent: #6d5bba;
+            --accent-hover: #8b7ad4;
+            --success: #00c853;
+            --error: #ff5252;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .lang-switcher {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .lang-switcher a {
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 0 0.5rem;
+        }
+
+        .lang-switcher a:hover {
+            color: var(--accent);
+        }
+
+        .lang-switcher a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .lang-switcher span {
+            color: var(--border);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .field {
+            margin-bottom: 1.5rem;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .field input[type="email"],
+        .field input[type="number"],
+        .field select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.9375rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .field select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23adadb8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--accent);
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent);
+            background: rgba(109, 91, 186, 0.05);
+        }
+
+        .file-upload.has-file {
+            border-color: var(--success);
+            border-style: solid;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload .label {
+            font-size: 0.875rem;
+            color: var(--text-dim);
+        }
+
+        .file-upload .filename {
+            font-size: 0.875rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .threshold-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .threshold-row input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .threshold-row span {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .flash {
+            padding: 0.875rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .flash.success {
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            color: var(--success);
+        }
+
+        .flash.error {
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid rgba(255, 82, 82, 0.3);
+            color: var(--error);
+        }
+
+        .info-list {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .info-list li {
+            list-style: none;
+            font-size: 0.8125rem;
+            color: var(--text-dim);
+            padding: 0.25rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .info-list li::before {
+            content: "·";
+            position: absolute;
+            left: 0.25rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .steam-logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 0.75rem;
+            opacity: 0.9;
+        }
+
+        /* ── Item Carousel ── */
+        .carousel-wrapper {
+            margin: 0 0 1.5rem 0;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            animation: scroll-left 40s linear infinite;
+            width: max-content;
+        }
+
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-track img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 8px rgba(109, 91, 186, 0.25));
+            transition: transform 0.3s, filter 0.3s;
+        }
+
+        .carousel-track img:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 4px 16px rgba(109, 91, 186, 0.5));
+        }
+
+        @keyframes scroll-left {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+    {% if cs2_images %}
+    <div class="carousel-wrapper">
+        <div class="carousel-track">
+            {% for img in cs2_images %}{% for _ in range(2) %}
+            <img src="/media/CS2/{{ img }}" alt="{{ img[:-5].replace('_', ' ') }}" loading="lazy">
+            {% endfor %}{% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="lang-switcher">
+            <a href="/?lang=en" {% if lang == 'en' %}class="active"{% endif %}>English</a>
+            <span>|</span>
+            <a href="/?lang=zh-TW" {% if lang == 'zh-TW' %}class="active"{% endif %}>繁體中文</a>
+            <span>|</span>
+            <a href="/?lang=zh-CN" {% if lang == 'zh-CN' %}class="active"{% endif %}>简体中文</a>
+        </div>
+
+        <div class="header">
+            <img src="/media/logo/steam.svg" alt="Steam" class="steam-logo">
+            <h1>Steam Trader</h1>
+            <p>{{ i.page_subtitle }}</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endwith %}
+
+        <div class="card">
+            <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                <input type="hidden" name="page_lang" value="{{ lang }}">
+
+                <div class="field">
+                    <label>{{ i.label_csv }}</label>
+                    <div class="file-upload" id="fileZone">
+                        <div class="icon">📎</div>
+                        <div class="label" id="fileLabel">{{ i.file_placeholder }}</div>
+                        <input type="file" name="csv_file" accept=".csv" required id="fileInput">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>{{ i.label_email }}</label>
+                    <input type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                </div>
+
+                <div class="field">
+                    <label>{{ i.label_threshold }}</label>
+                    <div class="threshold-row">
+                        <input type="number" name="threshold" value="{{ default_threshold }}" min="0" max="9999" required>
+                        <span>{{ i.threshold_suffix }}</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>{{ i.label_language }}</label>
+                    <select name="language">
+                        <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+                        <option value="zh-TW" {% if lang == 'zh-TW' %}selected{% endif %}>繁體中文</option>
+                        <option value="zh-CN" {% if lang == 'zh-CN' %}selected{% endif %}>简体中文</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">{{ i.btn_subscribe }}</button>
+            </form>
+
+            <ul class="info-list">
+                <li>{{ i.info_daily_push }}</li>
+                <li>{{ i.info_30_days }}</li>
+                <li>{{ i.info_unsubscribe }}</li>
+                <li>{{ i.info_csv_source }} <a href="https://chromewebstore.google.com/detail/steam-market-history-cata/dhpcikljplaooekklhbjohojbjbinega" target="_blank" rel="noopener">Steam Market History Cataloger</a> {{ i.info_csv_source_suffix }}</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            Built for fun, not for Wall Street.
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileLabel = document.getElementById('fileLabel');
+        const fileZone = document.getElementById('fileZone');
+        const defaultLabel = '{{ i.file_placeholder }}';
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileLabel.textContent = fileInput.files[0].name;
+                fileLabel.className = 'filename';
+                fileZone.classList.add('has-file');
+            } else {
+                fileLabel.textContent = defaultLabel;
+                fileLabel.className = 'label';
+                fileZone.classList.remove('has-file');
+            }
+        });
+
+        // Drag and drop
+        fileZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileZone.style.borderColor = 'var(--accent)';
+        });
+
+        fileZone.addEventListener('dragleave', () => {
+            if (!fileZone.classList.contains('has-file')) {
+                fileZone.style.borderColor = '';
+            }
+        });
+
+        fileZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>

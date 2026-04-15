@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="{{ lang_html }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Trader</title>
+</head>
+<body style="margin:0; padding:0; background:#0e0e10; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#0e0e10; padding:24px 0;">
+        <tr><td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background:#18181b; border-radius:12px; overflow:hidden; border:1px solid #2d2d33;">
+                <tr>
+                    <td style="padding:32px; text-align:center;">
+                        <img src="{{ steam_logo_url }}" alt="Steam" style="height:48px; width:48px; margin-bottom:12px;">
+                        <h1 style="font-size:22px; color:#efeff1; margin:0 0 8px;">Steam Trader</h1>
+                        <p style="font-size:14px; color:#00c853; margin:0 0 24px;">{{ i.email_welcome_success }}</p>
+
+                        <div style="background:#0e0e10; border-radius:8px; padding:20px; text-align:left;">
+                            <p style="font-size:13px; color:#adadb8; margin:0 0 12px;">{{ i.email_welcome_detail }}</p>
+                            <table width="100%" style="font-size:13px; color:#efeff1;">
+                                <tr>
+                                    <td style="padding:6px 0; color:#adadb8;">{{ i.email_welcome_email_label }}</td>
+                                    <td align="right" style="padding:6px 0;">{{ sub.email }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0; color:#adadb8;">{{ i.email_welcome_threshold_label }}</td>
+                                    <td align="right" style="padding:6px 0;">{{ "%.0f"|format(sub.threshold * 100) }}%</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0; color:#adadb8;">{{ i.email_welcome_cycle_label }}</td>
+                                    <td align="right" style="padding:6px 0;">{{ i.email_welcome_days }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <p style="font-size:13px; color:#adadb8; margin:24px 0 16px; line-height:1.6;">
+                            {{ i.email_welcome_body }}
+                        </p>
+
+                        <a href="{{ url_for('unsubscribe', token=sub.unsub_token, _external=True) if sub else '#' }}"
+                           style="font-size:12px; color:#6d5bba; text-decoration:none;">
+                            {{ i.email_unsubscribe }}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td></tr>
+    </table>
+</body>
+</html>
