@@ -112,7 +112,7 @@ def upload():
     # --- Parse CSV ---
     try:
         content = file.read()
-        items = parse_csv(content)
+        items, detected_currency, detected_country = parse_csv(content)
     except ValueError as exc:
         flash(t("flash_csv_error", lang, detail=str(exc)), "error")
         return redirect(url_for("index", lang=lang))
@@ -130,8 +130,8 @@ def upload():
     sub_id, token = create_subscription(
         email=email,
         threshold=threshold,
-        currency=Config.STEAM_CURRENCY,
-        country=Config.STEAM_COUNTRY,
+        currency=detected_currency,
+        country=detected_country,
         items_data=items,
         language=email_lang,
     )

@@ -6,7 +6,29 @@ from steam_api import SteamMarketAPI
 
 logger = logging.getLogger(__name__)
 
-STEAM_FEE_RATE = 0.12  # Steam takes ~12% (publisher + Steam fee combined)
+STEAM_FEE_RATE = 0.15  # Steam takes 15% (publisher fee + Steam fee combined)
+
+# Map price string prefix → (Steam currency code, country code)
+_CURRENCY_MAP = [
+    ("HK$",  29, "HK"),
+    ("US$",   1, "US"),
+    ("€",     3, "DE"),
+    ("£",     2, "GB"),
+    ("¥",    23, "CN"),   # also matches ￥
+    ("￥",   23, "CN"),
+    ("₩",   16, "KR"),
+    ("R$",   7, "BR"),
+    ("$",     1, "US"),   # fallback plain $
+]
+
+
+def _detect_currency(price_str: str):
+    """Return (steam_currency_code, country) from a raw price string, or (29, 'HK') as default."""
+    s = price_str.strip()
+    for prefix, code, country in _CURRENCY_MAP:
+        if s.startswith(prefix) or prefix in s:
+            return code, country
+    return 29, "HK"  # default HKD
 
 
 def parse_csv(file_content: bytes):
@@ -46,10 +68,17 @@ def parse_csv(file_content: bytes):
     df = df.rename(columns=col_map)
 
     items = []
+    detected_currency, detected_country = 29, "HK"  # will be overwritten on first valid price
+    currency_detected = False
     for _, row in df.iterrows():
-        price = _parse_price_str(str(row["price_str"]))
+        price_raw = str(row["price_str"])
+        price = _parse_price_str(price_raw)
         if price is None:
             continue
+
+        if not currency_detected:
+            detected_currency, detected_country = _detect_currency(price_raw)
+            currency_detected = True
 
         items.append(
             {
@@ -68,7 +97,8 @@ def parse_csv(file_content: bytes):
     if not items:
         raise ValueError("No valid items found in CSV.")
 
-    return items
+    logger.info("CSV currency detected: code=%d country=%s", detected_currency, detected_country)
+    return items, detected_currency, detected_country
 
 
 def analyze_portfolio(items, threshold=0.10, currency=29, country="HK"):
