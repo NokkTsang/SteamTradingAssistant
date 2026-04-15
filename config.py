@@ -12,7 +12,8 @@ class Config:
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024  # 2 MB upload limit
 
     # Database
-    DATABASE_PATH = os.getenv("DATABASE_PATH", "steam_trader.db")
+    DATABASE_URL = os.getenv("DATABASE_URL", "")  # PostgreSQL on Railway
+    DATABASE_PATH = os.getenv("DATABASE_PATH", "steam_trader.db")  # SQLite fallback (local)
 
     # Steam API
     STEAM_CURRENCY = int(os.getenv("STEAM_CURRENCY", "29"))  # 29 = HKD
