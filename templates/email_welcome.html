@@ -37,7 +37,7 @@
                             {{ i.email_welcome_body }}
                         </p>
 
-                        <a href="{{ url_for('unsubscribe', token=sub.unsub_token, _external=True) if sub else '#' }}"
+                        <a href="{{ unsub_url }}"
                            style="font-size:12px; color:#6d5bba; text-decoration:none;">
                             {{ i.email_unsubscribe }}
                         </a>

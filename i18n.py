@@ -14,9 +14,9 @@ STRINGS = {
         "zh-CN": "Steam Trader",
     },
     "page_subtitle": {
-        "en": "Track your Steam inventory value daily.<br>Upload your trade history CSV and get email alerts when items are worth selling.",
-        "zh-HK": "每天追蹤你的Steam庫存市值。<br>上傳 Steam 交易記錄，當物品達到目標收益即時收到郵件提醒。",
-        "zh-CN": "每天追踪你的 Steam 库存市值。<br>上传 Steam 交易记录，当物品达到目标收益即时收到邮件提醒。",
+        "en": "Track your Steam inventory value daily <br>Upload your trade history CSV and get email alerts when items are worth selling",
+        "zh-HK": "每天追蹤你的Steam庫存市值 <br>上傳 Steam 交易記錄，當物品達到目標收益即時收到郵件提醒",
+        "zh-CN": "每天追踪你的 Steam 库存市值 <br>上传 Steam 交易记录，当物品达到目标收益即时收到邮件提醒",
     },
     "label_csv": {
         "en": "Trade History CSV",
@@ -39,9 +39,9 @@ STRINGS = {
         "zh-CN": "收益率阈值",
     },
     "threshold_suffix": {
-        "en": "% — alert me when current market price exceeds my purchase price by this amount",
-        "zh-HK": "% — 當 Steam 市集現價比我的購入價高出此值時，推薦出手並發送提醒",
-        "zh-CN": "% — 当 Steam 市集现价比我的购入价高出此值时，推荐出手并发送提醒",
+        "en": "alert me when current market price exceeds my purchase price by this percentage",
+        "zh-HK": "當 Steam 市集現價比我的購入價高出此百分比時，推薦出手並發送提醒",
+        "zh-CN": "当 Steam 市集现价比我的购入价高出此百分比时，推荐出手并发送提醒",
     },
     "label_language": {
         "en": "Email Language",
@@ -54,9 +54,9 @@ STRINGS = {
         "zh-CN": "开始订阅",
     },
     "info_daily_push": {
-        "en": "Daily Steam Market report delivered to your inbox every morning",
-        "zh-HK": "每天早上自動發送 Steam 市集行情報告到你的信箱",
-        "zh-CN": "每天早上自动发送 Steam 市集行情报告到你的邮箱",
+        "en": "Daily Steam Market report delivered to your inbox",
+        "zh-HK": "每天自動發送 Steam 市集行情報告到你的信箱",
+        "zh-CN": "每天自动发送 Steam 市集行情报告到你的邮箱",
     },
     "info_30_days": {
         "en": "Auto-stops after 30 days, re-upload to refresh",

@@ -37,6 +37,7 @@ def send_report(to_email, report_data, subscription, day_number):
 
     # Build i18n proxy with formatted strings for keys that need parameters
     i = _I18nProxy(lang)
+    unsub_url = f"{Config.BASE_URL}/unsubscribe/{subscription.get('unsub_token', '')}"
 
     template = _jinja_env.get_template("email_report.html")
     html_body = template.render(
@@ -48,6 +49,7 @@ def send_report(to_email, report_data, subscription, day_number):
         threshold_pct=threshold_pct,
         lang_html=_lang_html(lang),
         steam_logo_url=f"{Config.BASE_URL}/media/logo/steam.svg",
+        unsub_url=unsub_url,
         i=type("I18n", (), {
             "email_day_label": t("email_day_label", lang, day=day_number, total=Config.SUBSCRIPTION_DAYS),
             "email_daily_report": t("email_daily_report", lang, pct=threshold_pct),
@@ -90,6 +92,7 @@ def send_report(to_email, report_data, subscription, day_number):
 def send_welcome(to_email, subscription):
     """Send a confirmation email after subscription is created."""
     lang = subscription.get("language", DEFAULT_LANG)
+    unsub_url = f"{Config.BASE_URL}/unsubscribe/{subscription.get('unsub_token', '')}"
 
     template = _jinja_env.get_template("email_welcome.html")
     html_body = template.render(
@@ -97,6 +100,7 @@ def send_welcome(to_email, subscription):
         total_days=Config.SUBSCRIPTION_DAYS,
         lang_html=_lang_html(lang),
         steam_logo_url=f"{Config.BASE_URL}/media/logo/steam.svg",
+        unsub_url=unsub_url,
         i=type("I18n", (), {
             "email_welcome_success": t("email_welcome_success", lang),
             "email_welcome_detail": t("email_welcome_detail", lang),

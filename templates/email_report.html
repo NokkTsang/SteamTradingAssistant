@@ -120,7 +120,7 @@
                             {{ i.email_remaining }} <strong style="color:#efeff1;">{{ i.email_remaining_days }}</strong>
                         </p>
                         <p style="margin:0;">
-                            <a href="{{ url_for('unsubscribe', token=sub.unsub_token, _external=True) if sub else '#' }}"
+                            <a href="{{ unsub_url }}"
                                style="font-size:12px; color:#6d5bba; text-decoration:none;">
                                 {{ i.email_unsubscribe }}
                             </a>
