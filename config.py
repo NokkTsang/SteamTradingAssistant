@@ -20,7 +20,10 @@ class Config:
     STEAM_COUNTRY = os.getenv("STEAM_COUNTRY", "HK")
     STEAM_REQUEST_INTERVAL = float(os.getenv("STEAM_REQUEST_INTERVAL", "1.5"))
 
-    # Email (SMTP)
+    # Resend API (preferred on Railway — bypasses SMTP port blocks)
+    RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+
+    # Email (SMTP — local dev fallback)
     SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
     SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
     SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"

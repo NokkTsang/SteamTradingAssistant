@@ -1,5 +1,6 @@
 import smtplib
 import logging
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from jinja2 import Environment, FileSystemLoader
@@ -126,11 +127,44 @@ def send_welcome(to_email, subscription):
 
 
 def _send_smtp(to_email, msg):
-    """Low-level SMTP send. Uses SMTP_SSL (port 465) if SMTP_USE_SSL=true, else STARTTLS (port 587)."""
+    """Send via Resend API (if RESEND_API_KEY set) or SMTP fallback."""
     if not Config.SMTP_USERNAME or not Config.SMTP_PASSWORD:
-        logger.warning("SMTP credentials not configured — email not sent to %s", to_email)
-        return
+        if not getattr(Config, 'RESEND_API_KEY', None):
+            logger.warning("No email credentials configured — email not sent to %s", to_email)
+            return
 
+    # --- Resend HTTP API (works on Railway) ---
+    if getattr(Config, 'RESEND_API_KEY', None):
+        try:
+            html_part = None
+            plain_part = None
+            for part in msg.walk():
+                if part.get_content_type() == 'text/html':
+                    html_part = part.get_payload(decode=True).decode('utf-8')
+                elif part.get_content_type() == 'text/plain':
+                    plain_part = part.get_payload(decode=True).decode('utf-8')
+
+            payload = {
+                "from": Config.MAIL_FROM,
+                "to": [to_email],
+                "subject": msg["Subject"],
+                "html": html_part or plain_part or "",
+                "text": plain_part or "",
+            }
+            resp = requests.post(
+                "https://api.resend.com/emails",
+                headers={"Authorization": f"Bearer {Config.RESEND_API_KEY}"},
+                json=payload,
+                timeout=15,
+            )
+            resp.raise_for_status()
+            logger.info("Email sent via Resend to %s", to_email)
+            return
+        except Exception as exc:
+            logger.error("Resend API failed for %s: %s", to_email, exc)
+            raise
+
+    # --- SMTP fallback (local dev) ---
     try:
         if Config.SMTP_USE_SSL:
             with smtplib.SMTP_SSL(Config.SMTP_HOST, Config.SMTP_PORT, timeout=30) as server:
@@ -142,7 +176,7 @@ def _send_smtp(to_email, msg):
                     server.starttls()
                 server.login(Config.SMTP_USERNAME, Config.SMTP_PASSWORD)
                 server.sendmail(Config.MAIL_FROM, [to_email], msg.as_string())
-        logger.info("Email sent to %s", to_email)
+        logger.info("Email sent via SMTP to %s", to_email)
     except Exception as exc:
         logger.error("Failed to send email to %s: %s", to_email, exc)
         raise
