@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steam Trader</title>
+    <title>{{ i.page_title }}</title>
     <style>
         :root {
             --bg: #0e0e10;
@@ -301,6 +301,8 @@
         .carousel-row:nth-child(1) { animation: scroll-left  55s linear infinite; }
         .carousel-row:nth-child(2) { animation: scroll-right 45s linear infinite; }
         .carousel-row:nth-child(3) { animation: scroll-left  65s linear infinite; }
+        .carousel-row:nth-child(4) { animation: scroll-right 50s linear infinite; }
+        .carousel-row:nth-child(5) { animation: scroll-left  60s linear infinite; }
 
         .carousel-row img {
             height: 90px;
@@ -327,19 +329,27 @@
 </head>
 <body>
     {% if cs2_images %}
-    {# Split 30 images into 3 rows with shuffled order #}
-    {% set row1 = [cs2_images[0],cs2_images[3],cs2_images[6],cs2_images[9],cs2_images[12],cs2_images[15],cs2_images[18],cs2_images[21],cs2_images[24],cs2_images[27]] %}
-    {% set row2 = [cs2_images[1],cs2_images[4],cs2_images[7],cs2_images[10],cs2_images[13],cs2_images[16],cs2_images[19],cs2_images[22],cs2_images[25],cs2_images[28]] %}
-    {% set row3 = [cs2_images[2],cs2_images[5],cs2_images[8],cs2_images[11],cs2_images[14],cs2_images[17],cs2_images[20],cs2_images[23],cs2_images[26],cs2_images[29]] %}
+    {# Scatter all 30 images across 5 rows — no adjacent duplicates, each row unique sequence #}
+    {% set row1 = [cs2_images[0],cs2_images[6],cs2_images[12],cs2_images[18],cs2_images[24],cs2_images[1],cs2_images[7],cs2_images[13],cs2_images[19],cs2_images[25]] %}
+    {% set row2 = [cs2_images[2],cs2_images[8],cs2_images[14],cs2_images[20],cs2_images[26],cs2_images[3],cs2_images[9],cs2_images[15],cs2_images[21],cs2_images[27]] %}
+    {% set row3 = [cs2_images[4],cs2_images[10],cs2_images[16],cs2_images[22],cs2_images[28],cs2_images[5],cs2_images[11],cs2_images[17],cs2_images[23],cs2_images[29]] %}
+    {% set row4 = [cs2_images[3],cs2_images[15],cs2_images[27],cs2_images[9],cs2_images[21],cs2_images[0],cs2_images[12],cs2_images[24],cs2_images[6],cs2_images[18]] %}
+    {% set row5 = [cs2_images[5],cs2_images[17],cs2_images[29],cs2_images[11],cs2_images[23],cs2_images[2],cs2_images[14],cs2_images[26],cs2_images[8],cs2_images[20]] %}
     <div class="carousel-bg">
         <div class="carousel-row">
-            {% for img in row1 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+            {% for img in row1 %}{% for _ in range(3) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
         </div>
         <div class="carousel-row">
-            {% for img in row2 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+            {% for img in row2 %}{% for _ in range(3) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
         </div>
         <div class="carousel-row">
-            {% for img in row3 %}{% for _ in range(2) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+            {% for img in row3 %}{% for _ in range(3) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+        </div>
+        <div class="carousel-row">
+            {% for img in row4 %}{% for _ in range(3) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
+        </div>
+        <div class="carousel-row">
+            {% for img in row5 %}{% for _ in range(3) %}<img src="/media/CS2/{{ img }}" alt="" loading="lazy">{% endfor %}{% endfor %}
         </div>
     </div>
     {% endif %}
@@ -411,7 +421,8 @@
         </div>
 
         <div class="footer">
-            Built for fun, not for Wall Street.
+            Built for fun, not for Wall Street.<br>
+            <span style="font-size:0.75rem; opacity:0.6;">Shout Out to CUCS !</span>
         </div>
     </div>
 

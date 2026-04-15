@@ -14,9 +14,9 @@ STRINGS = {
         "zh-CN": "Steam Trader",
     },
     "page_subtitle": {
-        "en": "Upload trade history, get daily market reports via email<br>We watch your idle inventory for you",
-        "zh-HK": "上傳交易記錄，每天收到行情報告郵件<br>閒置庫存幫你盯著",
-        "zh-CN": "上传交易记录，每天收到行情报告邮件<br>闲置库存帮你盯着",
+        "en": "Track your Steam inventory value daily.<br>Upload your trade history CSV and get email alerts when items are worth selling.",
+        "zh-HK": "每天追蹤你的Steam庫存市值。<br>上傳 Steam 交易記錄，當物品達到目標收益即時收到郵件提醒。",
+        "zh-CN": "每天追踪你的 Steam 库存市值。<br>上传 Steam 交易记录，当物品达到目标收益即时收到邮件提醒。",
     },
     "label_csv": {
         "en": "Trade History CSV",
@@ -39,9 +39,9 @@ STRINGS = {
         "zh-CN": "收益率阈值",
     },
     "threshold_suffix": {
-        "en": "% or above to recommend selling",
-        "zh-HK": "% 以上推薦出手",
-        "zh-CN": "% 以上推荐出手",
+        "en": "% — alert me when current market price exceeds my purchase price by this amount",
+        "zh-HK": "% — 當 Steam 市集現價比我的購入價高出此值時，推薦出手並發送提醒",
+        "zh-CN": "% — 当 Steam 市集现价比我的购入价高出此值时，推荐出手并发送提醒",
     },
     "label_language": {
         "en": "Email Language",
@@ -54,9 +54,9 @@ STRINGS = {
         "zh-CN": "开始订阅",
     },
     "info_daily_push": {
-        "en": "Daily market report delivered to your inbox",
-        "zh-HK": "每日自動推送行情報告到你的信箱",
-        "zh-CN": "每日自动推送行情报告到你的信箱",
+        "en": "Daily Steam Market report delivered to your inbox every morning",
+        "zh-HK": "每天早上自動發送 Steam 市集行情報告到你的信箱",
+        "zh-CN": "每天早上自动发送 Steam 市集行情报告到你的邮箱",
     },
     "info_30_days": {
         "en": "Auto-stops after 30 days, re-upload to refresh",
@@ -69,9 +69,9 @@ STRINGS = {
         "zh-CN": "随时回复邮件取消订阅",
     },
     "info_csv_source": {
-        "en": "CSV exported via",
-        "zh-HK": "CSV 由",
-        "zh-CN": "CSV 由",
+        "en": "CSV can be exported via",
+        "zh-HK": "CSV 可經由",
+        "zh-CN": "CSV 可通过",
     },
     "info_csv_source_suffix": {
         "en": "",
